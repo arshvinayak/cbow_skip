@@ -12,7 +12,7 @@ from collections import Counter
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="CBOW model hyperparameters")
 parser.add_argument("--learning_rate", type=float, default=0.01, help="Learning rate for the optimizer")
-parser.add_argument("--epochs", type=int, default=100, help="Number of training epochs")
+parser.add_argument("--epochs", type=int, default=120, help="Number of training epochs")
 parser.add_argument("--batch_size", type=int, default=8, help="Batch size for training")
 args = parser.parse_args()
 
