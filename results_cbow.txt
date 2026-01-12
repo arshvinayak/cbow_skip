@@ -1,0 +1,6 @@
+Top 5 words similar to `nurse` using CBOW:
+Word: `records`, Score: 0.8417952060699463
+Word: `bloodpressure`, Score: 0.7307896018028259
+Word: `counselling`, Score: 0.627445638179779
+Word: `schedulesfollow-up`, Score: 0.621238112449646
+Word: `Patient`, Score: 0.5915178656578064

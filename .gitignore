@@ -3,13 +3,13 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-# csv files
-*.csv
+# # csv files
+# *.csv
 
-# txt files
-vocab.txt
-loss_cbow.txt
-loss_skipgram.txt
+# # txt files
+# vocab.txt
+# loss_cbow.txt
+# loss_skipgram.txt
 
 # C extensions
 *.so

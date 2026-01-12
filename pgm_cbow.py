@@ -13,7 +13,7 @@ from collections import Counter
 parser = argparse.ArgumentParser(description="CBOW model hyperparameters")
 parser.add_argument("--learning_rate", type=float, default=0.01, help="Learning rate for the optimizer")
 parser.add_argument("--epochs", type=int, default=100, help="Number of training epochs")
-parser.add_argument("--batch_size", type=int, default=32, help="Batch size for training")
+parser.add_argument("--batch_size", type=int, default=8, help="Batch size for training")
 args = parser.parse_args()
 
 #hyperparameters 
@@ -46,6 +46,28 @@ def write_loss(history):
         file.write('epoch,loss,val_loss\n')
         for epoch, (loss, val_loss) in enumerate(zip(history.history['loss'], history.history['val_loss'])):
             file.write(f"{epoch+1},{loss: .3f},{val_loss: .3f}\n")
+
+def write_results():
+    print("\n\n\n\n\n------------------------Testing Similarity------------------------")
+    find = input("Enter a word to find similar words: ")
+
+    # Extract the weights from the first layer
+    # shape will be (vocab_size, embed_dim)
+    embeddings = model_cbow.layers[0].get_weights()[0]
+
+    # Find top 5 most similar words to 'physician'
+    # This compares vec_a against every row in the embedding_matrix
+    all_similarities = cosine_similarity(embeddings[enc[find]].reshape(1, -1), embeddings)[0]
+
+    # Get indices of the highest scores (excluding the word itself)
+    nearest_indices = all_similarities.argsort()[-6:-1][::-1]
+
+    with open('results_cbow.txt', 'w') as file:
+        file.write(f"Top 5 words similar to `{find}` using CBOW:\n")
+
+        # Map indices back to words
+        for i in nearest_indices:
+            file.write(f"Word: `{dec[i]}`, Score: {all_similarities[i]}\n")
 
 with open("input.txt") as f:
     data = f.read()
@@ -127,23 +149,4 @@ history = model_cbow.fit(
 )
 
 write_loss(history)
-
-# Extract the weights from the first layer
-# shape will be (vocab_size, embed_dim)
-embeddings = model_cbow.layers[0].get_weights()[0]
-
-print("\n\n\n\n\n------------------------Testing Similarity------------------------")
-find = input("Enter a word to find similar words: ")
-
-# Find top 5 most similar words to 'physician'
-# This compares vec_a against every row in the embedding_matrix
-all_similarities = cosine_similarity(embeddings[enc[find]].reshape(1, -1), embeddings)[0]
-
-# Get indices of the highest scores (excluding the word itself)
-nearest_indices = all_similarities.argsort()[-6:-1][::-1]
-
-print(f"\nTop 5 words similar to `{find}` using CBOW:\n")
-
-# Map indices back to words
-for i in nearest_indices:
-    print(f"Word: `{dec[i]}`, Score: {all_similarities[i]}")
+write_results()
