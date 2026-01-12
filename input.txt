@@ -1,0 +1,6 @@
+In a primary care clinic, the physician reviews symptoms, medical history, and vital signs
+before ordering a complete blood count and lipid profile. The nurse records blood
+pressure, oxygen saturation, and temperature, then updates the electronic health
+record. Based on lab results, the doctor adjusts medication dosage and schedules
+follow-up. Patient counselling focuses on diet, adherence, side effects, and early
+warning signs.
