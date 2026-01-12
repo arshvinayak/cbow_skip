@@ -1,5 +1,6 @@
 import numpy as np
 import csv
+import argparse
 
 from sklearn.metrics.pairwise import cosine_similarity
 import keras
@@ -8,13 +9,22 @@ from keras.optimizers import Adam
 
 from collections import Counter
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description="Skip-gram model hyperparameters")
+parser.add_argument("--learning_rate", type=float, default=0.01, help="Learning rate for the optimizer")
+parser.add_argument("--epochs", type=int, default=100, help="Number of training epochs")
+parser.add_argument("--batch_size", type=int, default=32, help="Batch size for training")
+parser.add_argument("--num_negatives", type=int, default=10, help="Number of negative samples")
+args = parser.parse_args()
+
 #hyperparameters 
-learning_rate = 0.01
-epochs = 100
-batch_size = 32
+learning_rate = args.learning_rate
+epochs = args.epochs
+batch_size = args.batch_size
+num_negatives = args.num_negatives
+
 emb_size = 10
 context_size = 4
-num_negatives = 10
 
 
 def write_data(data):
@@ -31,6 +41,13 @@ def write_vocab(data):
         occurrences = Counter(data)
         for word, count in occurrences.items():
             file.write(f"{word}: {count}\n")
+
+def write_loss(history):
+    with open('loss_skipgram.txt', 'w') as file:        
+        # Write all rows at once
+        file.write('epoch,loss,val_loss\n')
+        for epoch, (loss, val_loss) in enumerate(zip(history.history['loss'], history.history['val_loss'])):
+            file.write(f"{epoch+1},{loss: .3f},{val_loss: .3f}\n")
 
 
 with open("input.txt") as f:
@@ -130,13 +147,16 @@ model_skip.compile(
 )
 
 # train the Model
-model_skip.fit([x_enc[:,0], x_enc[:,1]], 
+history = model_skip.fit([x_enc[:,0], x_enc[:,1]], 
           y_enc,
           epochs=epochs, 
           batch_size=batch_size, 
           validation_split=0.2, # Automatically uses 20% of data for validation
           verbose=1
 )
+
+write_loss(history)
+
 
 # Extract the weights from the first layer
 # shape will be (vocab_size, embed_dim)

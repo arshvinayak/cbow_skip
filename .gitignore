@@ -8,6 +8,8 @@ __pycache__/
 
 # txt files
 vocab.txt
+loss_cbow.txt
+loss_skipgram.txt
 
 # C extensions
 *.so

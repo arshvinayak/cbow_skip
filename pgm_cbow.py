@@ -1,5 +1,6 @@
 import numpy as np
 import csv
+import argparse
 
 from sklearn.metrics.pairwise import cosine_similarity
 import keras
@@ -8,10 +9,18 @@ from keras.optimizers import Adam
 
 from collections import Counter
 
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description="CBOW model hyperparameters")
+parser.add_argument("--learning_rate", type=float, default=0.01, help="Learning rate for the optimizer")
+parser.add_argument("--epochs", type=int, default=100, help="Number of training epochs")
+parser.add_argument("--batch_size", type=int, default=32, help="Batch size for training")
+args = parser.parse_args()
+
 #hyperparameters 
-learning_rate = 0.01
-epochs = 150
-batch_size = 8
+learning_rate = args.learning_rate
+epochs = args.epochs
+batch_size = args.batch_size
+
 emb_size = 10
 context_size = 4
 
@@ -31,6 +40,12 @@ def write_vocab(data):
         for word, count in occurrences.items():
             file.write(f"{word}: {count}\n")
 
+def write_loss(history):
+    with open('loss_cbow.txt', 'w') as file:        
+        # Write all rows at once
+        file.write('epoch,loss,val_loss\n')
+        for epoch, (loss, val_loss) in enumerate(zip(history.history['loss'], history.history['val_loss'])):
+            file.write(f"{epoch+1},{loss: .3f},{val_loss: .3f}\n")
 
 with open("input.txt") as f:
     data = f.read()
@@ -102,7 +117,7 @@ model_cbow.compile(
 )
 
 # train the Model
-model_cbow.fit(
+history = model_cbow.fit(
     x_enc, 
     y_enc, 
     epochs=epochs, 
@@ -110,6 +125,8 @@ model_cbow.fit(
     validation_split=0.2, # Automatically uses 20% of data for validation
     verbose=1
 )
+
+write_loss(history)
 
 # Extract the weights from the first layer
 # shape will be (vocab_size, embed_dim)
