@@ -82,10 +82,11 @@ After training, both scripts allow you to test word similarity. Enter a word whe
 
 The Skip-Gram and CBOW model was tested with different learning rates to observe their impact on loss reduction during training. Below are the results:
 
-![Learning Rate vs Loss - Skip-Gram](skipgram_lr_comparison.png)
+![Learning Rate vs Loss - Skip-Gram](skipgram_lr_comparison.png)  
+*Figure 1: Loss comparison for Skip-Gram model with different learning rates.*
 
-
-![Learning Rate vs Loss - CBOW](cbow_lr_comparison.png)
+![Learning Rate vs Loss - CBOW](cbow_lr_comparison.png)  
+*Figure 2: Loss comparison for CBOW model with different learning rates.*
 
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
