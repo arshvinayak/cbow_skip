@@ -78,5 +78,14 @@ After training, both scripts allow you to test word similarity. Enter a word whe
 3. Check the output files for training results and vocabulary.
 4. Test word similarity using the console prompt.
 
+## Testing Learning Rates
+
+The Skip-Gram and CBOW model was tested with different learning rates to observe their impact on loss reduction during training. Below are the results:
+
+![Learning Rate vs Loss - Skip-Gram](skipgram_lr_comparison.png)
+
+
+![Learning Rate vs Loss - CBOW](cbow_lr_comparison.png)
+
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
